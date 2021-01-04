@@ -9,7 +9,7 @@ export default class User extends Component {
   componentDidMount() {
     console.log("Mount");
   }
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate() {
     console.log("Update");
 
     if (this.state.value) {
@@ -19,12 +19,55 @@ export default class User extends Component {
         this.setState(() => ({
           value: num,
         }));
-      }, 1000);
+      }, 20000);
+      setTimeout(() => {
+        clearInterval(this.a);
+        this.setState();
+      }, 20000);
     }
+    // const name = "my name";
+    // let value = "John Smith"
+    // // documentCookie = "name=значение; expires=дата; path=путь  domain=домен; secure"
+    // documentСookie = encodeURIComponent(name) + '=' + encodeURIComponent(value);
   }
-  componentWillUnmount() {
-    clearTimeout(this.a);
-  }
+  setCookie(name, value, options) { 
+    options = options || {}; 
+    var expires = options.expires; 
+    if (typeof expires == "number" && expires) { 
+    var d = new Date();
+     d.setTime(d.getTime() + expires * 1000); 
+    expires = options.expires = d; } 
+    if (expires && expires.toUTCString) { 
+    options.expires = expires.toUTCString(); } 
+    value = encodeURIComponent(value); 
+    var updatedCookie = name + "=" + value; 
+    for (var propName in options) { updatedCookie += "; " + propName; var propValue = options[propName]; 
+    if (propValue !== true) { updatedCookie += "=" + propValue; } }
+     document.cookie = updatedCookie; }
+  //  setCookie( name, value, expires, path, domain, secure ) {
+  //   document.cookie = name + "=" + escape(value) +
+  //     ((expires)  ?  "; expires=" + expires.toGMTString():   "") + 
+  //     ((path)  ?  "; path=" + path   :   "")   + 
+  //     ((domain)  ?  "; domain="   +  domain :   "")   + 
+  //     ((secure)  ?  ";   secure"  :   "");
+  // }
+  // getCookie(cname)
+  // {
+  // var name = cname + "=";
+  // var ca = document.cookie.split(';');
+  // for(var i=0; i<ca.length; i++) 
+  //   {
+  //   var c = ca[i].trim();
+  //   if (c.indexOf(name)==0) return c.substring(name.length,c.length);
+  //   }
+  // return "";
+  // }      
+  // getCookie(test){
+  //   console.log(test);
+  // }      
+
+
+  
 
   handleSubmit = (e) => {
     e.preventDefault();
@@ -53,15 +96,6 @@ export default class User extends Component {
   };
 
   render() {
-    // if (this.state.value) {
-    //   let num = this.generateNumber();
-    //   console.log(num);
-    //   this.a = setTimeout(() => {
-    //     this.setState(() => ({
-    //       value: num,
-    //     }));
-    //   }, 1000);
-    // }
     return (
       <>
         <form onSubmit={this.handleSubmit}>
